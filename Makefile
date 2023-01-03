@@ -1,19 +1,20 @@
+SOURCEFILES=$(wildcard include/*.cpp src/*.cpp)
+
+default: build
+
 .PHONY: all
 all: format test build
 
-.PHONY: format
-format:
+format: $(SOURCEFILES)
 	clang-format src/* include/* -i
 
-.PHONY: build
-build:
+build: $(SOURCEFILES)
 	mkdir -p build
 	cd build && \
 	cmake .. && \
 	make
 
-.PHONY: debug
-debug:
+debug: $(SOURCEFILES)
 	mkdir -p build
 	cd build && \
 	cmake -DCMAKE_BUILD_TYPE=debug .. && \
