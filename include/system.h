@@ -6,9 +6,22 @@
 
 #include "process.h"
 #include "processor.h"
+#include "linux_parser.h"
 
+// namespace monitor{
 class System {
  public:
+  System(const std::string kernel, const std::string operatingSystem):
+    kernel_(kernel),
+    operatingSystem_(operatingSystem){ }
+  static System initSystem(){
+    // ctor: do initial read & setting of private members that won't change
+    
+    return System(
+      LinuxParser::Kernel(),
+      LinuxParser::OperatingSystem()
+    );
+  }
   Processor& Cpu();                   // TODO: See src/system.cpp
   std::vector<Process>& Processes();  // TODO: See src/system.cpp
   float MemoryUtilization();          // TODO: See src/system.cpp
@@ -22,6 +35,9 @@ class System {
  private:
   Processor cpu_ = {};
   std::vector<Process> processes_ = {};
+  const std::string kernel_;
+  const std::string operatingSystem_;
 };
 
+// }// namespace monitor
 #endif
