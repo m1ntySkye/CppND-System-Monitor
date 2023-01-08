@@ -6,7 +6,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-
+#include <algorithm>
 using std::stof;
 using std::string;
 using std::to_string;
@@ -17,7 +17,7 @@ string LinuxParser::OperatingSystem() {
   string line;
   string key;
   string value;
-  std::ifstream filestream(kOSPath);
+  std::ifstream filestream(kEtcDirectory/kOSPath);
   if (filestream.is_open()) {
     while (std::getline(filestream, line)) {
       std::replace(line.begin(), line.end(), ' ', '_');
@@ -39,7 +39,7 @@ string LinuxParser::OperatingSystem() {
 string LinuxParser::Kernel() {
   string os, kernel, version;
   string line;
-  std::ifstream stream(kProcDirectory + kVersionFilename);
+  std::ifstream stream(kProcDirectory/kVersionFilename);
   if (stream.is_open()) {
     std::getline(stream, line);
     std::istringstream linestream(line);
@@ -78,7 +78,7 @@ float LinuxParser::MemoryUtilization() {
   const string KeyMemTotal("MemTotal:");
   const string KeyMemFree("MemFree:");
   // file to parse: /proc/meminfo (LinuxParser::kMeminfoFilename)
-  std::ifstream stream(kProcDirectory + kMeminfoFilename);
+  std::ifstream stream(kProcDirectory/kMeminfoFilename);
   if (stream.is_open()) {
     while (std::getline(stream, line)) {
       std::istringstream(line) >> key >> value;// >> unit;
@@ -99,7 +99,7 @@ float LinuxParser::MemoryUtilization() {
 
 // TODO: Read and return the system uptime
 long LinuxParser::UpTime() { 
-  std::ifstream stream(kProcDirectory + kUptimeFilename);
+  std::ifstream stream(kProcDirectory/kUptimeFilename);
   if (stream.is_open()) {
     long uptime = -1.0;
     long idleTime = -1.0;
@@ -110,7 +110,9 @@ long LinuxParser::UpTime() {
 }
 
 // TODO: Read and return the number of jiffies for the system
-long LinuxParser::Jiffies() { return 0; }
+long LinuxParser::Jiffies() { 
+  
+}
 
 // TODO: Read and return the number of active jiffies for a PID
 // REMOVE: [[maybe_unused]] once you define the function
@@ -126,27 +128,50 @@ long LinuxParser::IdleJiffies() { return 0; }
 vector<string> LinuxParser::CpuUtilization() { return {}; }
 
 // TODO: Read and return the total number of processes
-int LinuxParser::TotalProcesses() { return 0; }
+int LinuxParser::TotalProcesses() {return 0;}
 
 // TODO: Read and return the number of running processes
-int LinuxParser::RunningProcesses() { return 0; }
+int LinuxParser::RunningProcesses() { 
+  std::istringstream runningLine(readKeyedFile(kProcDirectory/kStatFilename,"procs_running"));
+  int runningProcs{};
+  runningLine >> runningProcs;
+  return runningProcs;
+}
 
 // TODO: Read and return the command associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Command(int pid [[maybe_unused]]) { return string(); }
+string LinuxParser::Command(int pid [[maybe_unused]]) { return "LinuxParser::Command test string"; }
 
 // TODO: Read and return the memory used by a process
 // REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Ram(int pid [[maybe_unused]]) { return string(); }
+string LinuxParser::Ram(int pid [[maybe_unused]]) { return "LinuxParser::Ram test string"; }
 
 // TODO: Read and return the user ID associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Uid(int pid [[maybe_unused]]) { return string(); }
+string LinuxParser::Uid(int pid [[maybe_unused]]) { return "LinuxParser::Uid test string"; }
 
 // TODO: Read and return the user associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::User(int pid [[maybe_unused]]) { return string(); }
+string LinuxParser::User(int pid [[maybe_unused]]) { return "LinuxParser::User test string"; }
 
 // TODO: Read and return the uptime of a process
 // REMOVE: [[maybe_unused]] once you define the function
 long LinuxParser::UpTime(int pid [[maybe_unused]]) { return 0; }
+
+
+std::string LinuxParser::readKeyedFile(std::filesystem::path file, std::string key){
+  string line{}, lineKey{};
+  std::ifstream stream(file);
+  if (stream.is_open()) {
+    while(std::getline(stream, line)){
+      std::istringstream linestream(line);
+      linestream >> lineKey;
+      if(key == lineKey){
+        //get remaining line from buffer;
+        std::getline(linestream,line);
+        break;
+      }
+    }
+  }
+  return line;
+}

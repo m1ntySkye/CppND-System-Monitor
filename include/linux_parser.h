@@ -4,19 +4,23 @@
 #include <fstream>
 #include <regex>
 #include <string>
+#include <filesystem>
 
 namespace LinuxParser {
-// Paths
-const std::string kProcDirectory{"/proc/"};
-const std::string kCmdlineFilename{"/cmdline"};
-const std::string kCpuinfoFilename{"/cpuinfo"};
-const std::string kStatusFilename{"/status"};
-const std::string kStatFilename{"/stat"};
-const std::string kUptimeFilename{"/uptime"};
-const std::string kMeminfoFilename{"/meminfo"};
-const std::string kVersionFilename{"/version"};
-const std::string kOSPath{"/etc/os-release"};
-const std::string kPasswordPath{"/etc/passwd"};
+// /proc/ Paths
+const std::filesystem::path kProcDirectory{"/proc/"};
+const std::filesystem::path kCmdlineFilename{"cmdline"};
+const std::filesystem::path kCpuinfoFilename{"cpuinfo"};
+const std::filesystem::path kStatusFilename{"status"};
+const std::filesystem::path kStatFilename{"stat"};
+const std::filesystem::path kUptimeFilename{"uptime"};
+const std::filesystem::path kMeminfoFilename{"meminfo"};
+const std::filesystem::path kVersionFilename{"version"};
+
+// /etc/ Paths
+const std::filesystem::path kEtcDirectory{"/etc/"};
+const std::filesystem::path kOSPath{"os-release"};
+const std::filesystem::path kPasswordPath{"passwd"};
 
 // System
 float MemoryUtilization();
@@ -52,6 +56,13 @@ std::string Ram(int pid);
 std::string Uid(int pid);
 std::string User(int pid);
 long int UpTime(int pid);
+
+// Helpers:
+
+// read a line from a file which matches the key.
+// returns empty string if file or line starting with key not found.
+std::string readKeyedFile(std::filesystem::path file, std::string key);
+
 };  // namespace LinuxParser
 
-#endif
+#endif // SYSTEM_PARSER_H
