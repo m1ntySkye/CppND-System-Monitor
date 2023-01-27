@@ -16,6 +16,7 @@ const std::filesystem::path kStatFilename{"stat"};
 const std::filesystem::path kUptimeFilename{"uptime"};
 const std::filesystem::path kMeminfoFilename{"meminfo"};
 const std::filesystem::path kVersionFilename{"version"};
+const std::filesystem::path kSchedstatFilename{"schedstat"};
 
 // /etc/ Paths
 const std::filesystem::path kEtcDirectory{"/etc/"};
@@ -62,6 +63,9 @@ long int UpTime(int pid);
 // read a line from a file which matches the key.
 // returns empty string if file or line starting with key not found.
 std::string readKeyedFile(std::filesystem::path file, std::string key);
+
+// read and return the full contents of a file
+std::string readFile(std::filesystem::path file);
 
 };  // namespace LinuxParser
 

@@ -110,13 +110,10 @@ long LinuxParser::UpTime() {
 }
 
 // TODO: Read and return the number of jiffies for the system
-long LinuxParser::Jiffies() { 
-  
+long LinuxParser::Jiffies()
+{ 
+  readKeyedFile(kProcDirectory/kSchedstatFilename,"timestamp");
 }
-
-// TODO: Read and return the number of active jiffies for a PID
-// REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::ActiveJiffies(int pid [[maybe_unused]]) { return 0; }
 
 // TODO: Read and return the number of active jiffies for the system
 long LinuxParser::ActiveJiffies() { return 0; }
@@ -128,19 +125,37 @@ long LinuxParser::IdleJiffies() { return 0; }
 vector<string> LinuxParser::CpuUtilization() { return {}; }
 
 // TODO: Read and return the total number of processes
-int LinuxParser::TotalProcesses() {return 0;}
+int LinuxParser::TotalProcesses() 
+{
+  std::istringstream totalLine(readKeyedFile(kProcDirectory/kStatFilename,"processes"));
+  int nprocs = -1;
+  totalLine >> nprocs;
+  return nprocs;
+}
 
 // TODO: Read and return the number of running processes
-int LinuxParser::RunningProcesses() { 
+int LinuxParser::RunningProcesses()
+{
   std::istringstream runningLine(readKeyedFile(kProcDirectory/kStatFilename,"procs_running"));
-  int runningProcs{};
+  int runningProcs = -1;
   runningLine >> runningProcs;
   return runningProcs;
 }
 
+// TODO: Read and return the number of active jiffies for a PID
+// REMOVE: [[maybe_unused]] once you define the function
+long LinuxParser::ActiveJiffies(int pid [[maybe_unused]]) {
+  std::string pidFile = readFile(kProcDirectory/std::filesystem::path(to_string(pid))/kStatFilename);
+  pidFile.
+  return 0;
+}
+
 // TODO: Read and return the command associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Command(int pid [[maybe_unused]]) { return "LinuxParser::Command test string"; }
+string LinuxParser::Command(int pid [[maybe_unused]])
+{
+  return readFile(kProcDirectory/std::filesystem::path(to_string(pid))/kCmdlineFilename);
+}
 
 // TODO: Read and return the memory used by a process
 // REMOVE: [[maybe_unused]] once you define the function
@@ -174,4 +189,15 @@ std::string LinuxParser::readKeyedFile(std::filesystem::path file, std::string k
     }
   }
   return line;
+}
+
+std::string LinuxParser::readFile(std::filesystem::path file, std::string key){
+  string file_s = "";
+  std::ifstream stream(file);
+  if (stream.is_open()) {
+    std::stringstream sstream;
+    sstream << stream.rdbuf();
+    file_s = sstream.str();
+  }
+  return file_s;
 }

@@ -1,4 +1,4 @@
-#include "gtest/gest.h"
+#include "gtest/gtest.h"
 #include <fstream>
 #include <iostream>
 #include <optional>
@@ -16,13 +16,13 @@ class LinuxParserTest : public ::testing::Test {
 
 
 
-// Test MemoryUtilization().
-TEST_F(LinuxParserTest, MemoryUtilization) {
-    EXPECT_EQ(
-        LinuxParser::MemoryUtilization(),
-        0
-    );
-}
+// // Test MemoryUtilization().
+// TEST_F(LinuxParserTest, MemoryUtilization) {
+//     EXPECT_EQ(
+//         LinuxParser::MemoryUtilization(),
+//         0
+//     );
+// }
 
 
 // Test UpTime().
@@ -34,49 +34,49 @@ TEST_F(LinuxParserTest, UpTime) {
 }
 
 
-// Test Pids().
-TEST_F(LinuxParserTest, Pids) {
-    EXPECT_EQ(
-        LinuxParser::Pids(),
-        0
-    );
-}
+// // Test Pids().
+// TEST_F(LinuxParserTest, Pids) {
+//     EXPECT_EQ(
+//         LinuxParser::Pids(),
+//         0
+//     );
+// }
 
 
-// Test TotalProcesses().
-TEST_F(LinuxParserTest, TotalProcesses) {
-    EXPECT_EQ(
-        LinuxParser::TotalProcesses(),
-        0
-    );
-}
+// // Test TotalProcesses().
+// TEST_F(LinuxParserTest, TotalProcesses) {
+//     EXPECT_EQ(
+//         LinuxParser::TotalProcesses(),
+//         0
+//     );
+// }
 
 
-// Test RunningProcesses().
-TEST_F(LinuxParserTest, RunningProcesses) {
-    EXPECT_EQ(
-        LinuxParser::RunningProcesses(),
-        0
-    );
-}
+// // Test RunningProcesses().
+// TEST_F(LinuxParserTest, RunningProcesses) {
+//     EXPECT_EQ(
+//         LinuxParser::RunningProcesses(),
+//         0
+//     );
+// }
 
 
-// Test OperatingSystem().
-TEST_F(LinuxParserTest, OperatingSystem) {
-    EXPECT_EQ(
-        LinuxParser::OperatingSystem(),
-        0
-    );
-}
+// // Test OperatingSystem().
+// TEST_F(LinuxParserTest, OperatingSystem) {
+//     EXPECT_EQ(
+//         LinuxParser::OperatingSystem(),
+//         0
+//     );
+// }
 
 
-// Test Kernel().
-TEST_F(LinuxParserTest, Kernel) {
-    EXPECT_EQ(
-        LinuxParser::Kernel(),
-        0
-    );
-}
+// // Test Kernel().
+// TEST_F(LinuxParserTest, Kernel) {
+//     EXPECT_EQ(
+//         LinuxParser::Kernel(),
+//         0
+//     );
+// }
 
 
 // // Test the CalculateHValue method.

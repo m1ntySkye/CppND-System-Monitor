@@ -20,6 +20,9 @@ debug: $(SOURCEFILES)
 	cmake -DCMAKE_BUILD_TYPE=debug .. && \
 	make
 
+run: build
+	./build/monitor
+
 .PHONY: clean
 clean:
 	rm -rf build
